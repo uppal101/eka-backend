@@ -5,6 +5,10 @@ const router = express.Router();
 const bcrypt = require('bcrypt-as-promised');
 const knex = require('../knex');
 
+router.get('/users', (req, res, next) => {
+  res.send('HI');
+});
+
 router.post('/users', (req, res, next) => {
   console.log('This is req', req.body)
   bcrypt.hash(req.body.password, 12)
@@ -21,16 +25,16 @@ router.post('/users', (req, res, next) => {
       .then((user) => {
         return knex('users')
           .insert({
-            username: req.body.userName,
+            username: req.body.username,
             email: req.body.email,
             hashed_password: hashed_password,
-            first_name: req.body.firstName,
-            last_name: req.body.lastName,
+            first_name: req.body.first_name,
+            last_name: req.body.last_name,
             telephone: req.body.telephone,
-            street_address: req.body.streetAddress,
+            street_address: req.body.street_address,
             city: req.body.city,
             state: req.body.state,
-            zip: req.body.zipcode
+            zip: req.body.zip
           }, '*')
       })
       .then((users) => {
