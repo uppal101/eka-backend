@@ -6,6 +6,7 @@ const bcrypt = require('bcrypt-as-promised');
 const knex = require('../knex');
 
 router.post('/users', (req, res, next) => {
+  console.log('This is req', req.body)
   bcrypt.hash(req.body.password, 12)
     .then((hashed_password) => {
       return knex('users')
@@ -17,7 +18,7 @@ router.post('/users', (req, res, next) => {
         }
         return email;
       })
-        .then((user) => {
+      .then((user) => {
         return knex('users')
           .insert({
             username: req.body.userName,
@@ -32,7 +33,7 @@ router.post('/users', (req, res, next) => {
             zip: req.body.zipcode
           }, '*')
       })
-      ,then((users) => {
+      .then((users) => {
         const user = users[0];
         delete user.hashed_password;
         res.send(user);

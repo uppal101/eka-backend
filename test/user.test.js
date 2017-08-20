@@ -53,7 +53,7 @@ const app = require('../app');
         street_address:'1 Like ',
         city:'Breaking',
         state:'Code',
-        zip:'20050'
+        zip: 20050
       })
       .expect((res) => {
         delete res.body.createdAt;
@@ -69,7 +69,7 @@ const app = require('../app');
         street_address:'1 Like ',
         city:'Breaking',
         state:'Code',
-        zip:'20050'
+        zip: 20050
       })
       .expect('Content-Type', /json/)
       .end(done);
