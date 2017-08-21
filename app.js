@@ -10,19 +10,23 @@ if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config();
 }
 
-const allowCrossDomain = function (req, res, next) {
-  res.header('Access-Control-Allow-Credentials', true);
-  res.header('Access-Control-Allow-Origin', req.headers.origin);
-  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-  res.header('Access-Control-Allow-Headers', 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept');
-  if (req.method == 'OPTIONS') {
-    res.send(200);
-  } else {
-    next();
-  }
-};
+const whitelist = ['http://localhost:3001/signup1',  'http://localhost:3001/signup2', 'http://localhost:3001/signup3']
 
-app.use(allowCrossDomain);
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true)
+    } else {
+      callback(new Error('Not allowed by CORS'))
+    }
+  }
+}
+
+app.post('/users', cors(corsOptions), function (req, res, next) {
+  res.json({msg: 'This is CORS-enabled for a whitelisted domain.'})
+})
+
+
 
 app.use(cors());
 app.use(bodyParser.json());
