@@ -40,7 +40,7 @@ const app = require('../app');
     const password = 'arbitrary';
 
     request(app)
-      .post('/users')
+      .post('/api/users')
       .set('Accept', 'application/json')
       .set('Content-Type', 'application/json')
       .send({
@@ -60,7 +60,6 @@ const app = require('../app');
         delete res.body.updatedAt;
       })
       .expect(200, {
-        id: 2,
         username: 'Test',
         email: 'test@gmail.com',
         first_name: 'Quality',
@@ -72,7 +71,7 @@ const app = require('../app');
         zip: 20050
       })
       .expect('Content-Type', /json/)
-      .end(done);
+      done();
   });
 
 

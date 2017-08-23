@@ -10,7 +10,8 @@ router.get('/users', (req, res, next) => {
 });
 
 router.post('/users', (req, res, next) => {
-  console.log('This is req', req.body)
+//  console.log('This is req', req.body)
+  console.log('first')
   bcrypt.hash(req.body.password, 12)
     .then((hashed_password) => {
       return knex('users')
@@ -22,6 +23,7 @@ router.post('/users', (req, res, next) => {
         }
         return email;
       })
+      console.log('HI')
       .then((user) => {
         return knex('users')
           .insert({
@@ -38,9 +40,24 @@ router.post('/users', (req, res, next) => {
           }, '*')
       })
       .then((users) => {
-        const user = users[0];
-        delete user.hashed_password;
-        res.send(user);
+        const userInfo = users[0];
+        delete userInfo.hashed_password;
+        delete userInfo.created_at;
+        delete userInfo.updated_at;
+        
+        const user = {
+          username: userInfo.username,
+          email: userInfo.email,
+          first_name: userInfo.first_name,
+          last_name: userInfo.last_name,
+          telephone: userInfo.telephone,
+          street_address: userInfo.street_address,
+          city: userInfo.city,
+          state: userInfo.state,
+          zip: userInfo.zip
+        }
+        console.log(user)
+        res.status(200).send(user);
       })
       .catch((err) => {
         next(err);
